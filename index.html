@@ -46,9 +46,13 @@
   <div class="card-block">
     <h4 class="card-title">View Idea</h4>
     <p class="card-text" id="newIdea">Press button to view another idea</p>
+    <p class="card-text" id="votes"></p>
+    <p class="card-text" display = "none" id="dbval"></p>
+
+
       <input type='button' class = "btn-lg" onclick="randoIdea()" value='Random idea'/>
-      <input type='button' class="btn btn-success" onclick="up()" value='I like it!'/>
-      <input type='button' class="btn btn-danger" onclick="down()" value='What...?'/>
+      <input type='button' display = "none" class="btn btn-success" onclick="up()" value='I like it!'/>
+      <input type='button' display = "none" class="btn btn-danger" onclick="down()" value='What...?'/>
 
   </div>
 </div>
@@ -77,17 +81,46 @@ function randoIdea() {
                 ideasRef.once('value',function(snapshot){
                     var countVal = snapshot.val().count;
                     var randInt = Math.floor(Math.random() * (countVal));
+                    document.getElementById("votes").innerHTML="Popularity: " + arr[randInt].Votes;
+                    document.getElementById("dbval").innerHTML=randInt;
+                    document.getElementById("dbval").style.visibility = "hidden";
                     document.getElementById("newIdea").innerHTML=arr[randInt].Idea;
                 });
 
           });
 }
 function up() {
+  var ideasRef = firebase.database().ref('ideas/');
+          ideasRef.once('value',function(snapshot){
+              var arr = snapshot.val();
+              var dbval = parseInt(document.getElementById("dbval").innerHTML);
+              var newVotes = (arr[dbval].Votes+1);
+              document.getElementById("votes").innerHTML="Popularity: " + newVotes;
 
+              var data = arr[dbval];
+              data["Votes"] = newVotes;
+
+               firebase.database().ref('ideas/'+dbval).set(data);
+
+
+          });
 }
 
 function down() {
+  var ideasRef = firebase.database().ref('ideas/');
+          ideasRef.once('value',function(snapshot){
+              var arr = snapshot.val();
+              var dbval = parseInt(document.getElementById("dbval").innerHTML);
+              var newVotes = (arr[dbval].Votes-1);
+              document.getElementById("votes").innerHTML="Popularity: " + newVotes;
 
+              var data = arr[dbval];
+              data["Votes"] = newVotes;
+
+               firebase.database().ref('ideas/'+dbval).set(data);
+
+
+          });
 }
 </script>
 
