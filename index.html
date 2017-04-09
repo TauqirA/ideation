@@ -32,7 +32,7 @@
         <textarea class="form-control" rows="5" id="comment"></textarea>
     </div>
     <div class="add-Idea-Button-block">
-      <input type='button' onclick="copyIdeaFunc()" value='Save idea'/>
+      <input type='button' class = "btn-lg" onclick="copyIdeaFunc()" value='Save idea'/>
 
     </div>
   </div>
@@ -46,7 +46,10 @@
   <div class="card-block">
     <h4 class="card-title">View Idea</h4>
     <p class="card-text" id="newIdea">Press button to view another idea</p>
-      <input type='button' onclick="randoIdea()" value='Random idea'/>
+      <input type='button' class = "btn-lg" onclick="randoIdea()" value='Random idea'/>
+      <input type='button' class="btn btn-success" onclick="up()" value='I like it!'/>
+      <input type='button' class="btn btn-danger" onclick="down()" value='What...?'/>
+
   </div>
 </div>
     </div>
@@ -58,8 +61,9 @@ function copyIdeaFunc() {
 
   var userInput= document.getElementById("comment").value;
   console.log(userInput);
-    document.getElementById("comment").value="";
   fireBaseFunc();
+  document.getElementById("comment").value="";
+
 
 }
 function randoIdea() {
@@ -78,19 +82,26 @@ function randoIdea() {
 
           });
 }
+function up() {
+
+}
+
+function down() {
+
+}
 </script>
 
 <script src="https://www.gstatic.com/firebasejs/3.7.5/firebase.js"></script>
 <script>
   // Initialize Firebase
   var config = {
-    apiKey: "AIzaSyDgvI0shuPI0KaI7OGFKWEtuZ7B4kIyp-A",
-    authDomain: "ideation-45782.firebaseapp.com",
-    databaseURL: "https://ideation-45782.firebaseio.com",
-    projectId: "ideation-45782",
-    storageBucket: "ideation-45782.appspot.com",
-    messagingSenderId: "343715675485"
+    apiKey: "AIzaSyAOcucVH5Lrz2sr2MaLDSPCzdgPCNprPNU",
+    authDomain: "ideation2-e784c.firebaseapp.com",
+    databaseURL: "https://ideation2-e784c.firebaseio.com/",
+    projectId: "ideation2-e784c",
+    storageBucket: "ideation2-e784c.appspot.com",
   };
+
   firebase.initializeApp(config);
 
   // Get a reference to the database service
@@ -99,11 +110,11 @@ function randoIdea() {
     var increment;
    function fireBaseFunc(event)
    {
-       var text = document.getElementById('newIdea').innerHTML;
+       var text = document.getElementById('comment').value;
        var count = 0;
        var date = Date();
        var send = {};
-       var data = {Idea: text, Date: date};
+       var data = {Idea: text, Date: date, Votes: 0};
        send[count] = data;
        var ideasRef = firebase.database().ref('appState/');
        ideasRef.once('value',function(snapshot){
@@ -113,8 +124,8 @@ function randoIdea() {
           firebase.database().ref('ideas/'+countVal).set(data);
           firebase.database().ref('appState/').set(newState);
        });
-       
-       
+
+
 
 
    }
