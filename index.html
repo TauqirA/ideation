@@ -45,10 +45,8 @@
     <div class="card" style="background-color:#ccc;">
   <div class="card-block">
     <h4 class="card-title">View Idea</h4>
-    <h6 class="card-subtitle mb-2 text-unmuted">Card subtitle</h6>
-    <p class="card-text" id="newIdea">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="card-link">Card link</a>
-    <a href="#" class="card-link">Another link</a>
+    <p class="card-text" id="newIdea">Press button to view another idea</p>
+      <input type='button' onclick="randoIdea()" value='Random idea'/>
   </div>
 </div>
     </div>
@@ -60,10 +58,25 @@ function copyIdeaFunc() {
 
   var userInput= document.getElementById("comment").value;
   console.log(userInput);
-  document.getElementById("newIdea").innerHTML=userInput;
-  document.getElementById("comment").value="";
+    document.getElementById("comment").value="";
   fireBaseFunc();
 
+}
+function randoIdea() {
+
+  var userInput= document.getElementById("comment").value;
+  console.log(userInput);
+  var ideasRef = firebase.database().ref('ideas/');
+          ideasRef.once('value',function(snapshot){
+              var arr = snapshot.val();
+              var ideasRef = firebase.database().ref('appState/');
+                ideasRef.once('value',function(snapshot){
+                    var countVal = snapshot.val().count;
+                    var randInt = Math.floor(Math.random() * (countVal));
+                    document.getElementById("newIdea").innerHTML=arr[randInt].Idea;
+                });
+
+          });
 }
 </script>
 
@@ -98,11 +111,6 @@ function copyIdeaFunc() {
           var newState = {count: countVal+1};
 
           firebase.database().ref('ideas/'+countVal).set(data);
-          var ideasRef = firebase.database().ref('ideas/');
-          ideasRef.once('value',function(snapshot){
-              console.log(snapshot);
-          });
-
           firebase.database().ref('appState/').set(newState);
        });
        
