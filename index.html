@@ -66,17 +66,26 @@ function copyIdeaFunc() {
 </script>
 <script>
 
-    var url = 'https://idea-4531c.firebaseio.com/';
+    var url = 'https://ideation-df616.firebaseio.com/';
     var firebase = new Firebase(url);
-
+    var increment;
    function fireBaseFunc(event)
    {
        var text = document.getElementById('newIdea').innerHTML;
 
+
+       var count = ??;
        var date = Date();
-       firebase. child(newIdea).set({Idea: text, Date: date});
-       event.preventDefault();
+       var send = {};
+       var data = {Idea: text, Date: date};
+       send[count] = data;
+
+       firebase.set(send);
+
+
    }
+
+
    </script>
 
 <!--/.Card Light-->
