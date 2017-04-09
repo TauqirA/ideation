@@ -13,8 +13,10 @@
 <link rel="stylesheet" href="./css/bootstrap.min.css" >
 
 <!-- Latest compiled and minified JavaScript -->
+
 <script src="./js/bootstrap.min.js"></script>
-<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.6.6/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
 
 </head>
 
@@ -64,23 +66,47 @@ function copyIdeaFunc() {
 
 }
 </script>
-<script>
 
-    var url = 'https://ideation-df616.firebaseio.com/';
-    var firebase = new Firebase(url);
+<script src="https://www.gstatic.com/firebasejs/3.7.5/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDgvI0shuPI0KaI7OGFKWEtuZ7B4kIyp-A",
+    authDomain: "ideation-45782.firebaseapp.com",
+    databaseURL: "https://ideation-45782.firebaseio.com",
+    projectId: "ideation-45782",
+    storageBucket: "ideation-45782.appspot.com",
+    messagingSenderId: "343715675485"
+  };
+  firebase.initializeApp(config);
+
+  // Get a reference to the database service
+  var database = firebase.database();
+    console.log(firebase)
     var increment;
    function fireBaseFunc(event)
    {
        var text = document.getElementById('newIdea').innerHTML;
-
-
-       var count = ??;
+       var count = 0;
        var date = Date();
        var send = {};
        var data = {Idea: text, Date: date};
        send[count] = data;
+       var ideasRef = firebase.database().ref('appState/');
+       ideasRef.once('value',function(snapshot){
+          var countVal = snapshot.val().count;
+          var newState = {count: countVal+1};
 
-       firebase.set(send);
+          firebase.database().ref('ideas/'+countVal).set(data);
+          var ideasRef = firebase.database().ref('ideas/');
+          ideasRef.once('value',function(snapshot){
+              console.log(snapshot);
+          });
+
+          firebase.database().ref('appState/').set(newState);
+       });
+       
+       
 
 
    }
