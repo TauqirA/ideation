@@ -14,7 +14,8 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="./js/bootstrap.min.js"></script>
-    
+<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+
 </head>
 
 <body>
@@ -28,16 +29,22 @@
         <label for="comment"></label>
         <textarea class="form-control" rows="5" id="comment"></textarea>
     </div>
+    <div class="add-Idea-Button-block">
+      <input type='button' onclick="copyIdeaFunc()" value='Save idea'/>
+
+    </div>
   </div>
 </div>
     </div>
     </div>
+
+
   <div class="col-sm-3">    <div class="center-block" >
     <div class="card" style="background-color:#ccc;">
   <div class="card-block">
     <h4 class="card-title">View Idea</h4>
-    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <h6 class="card-subtitle mb-2 text-unmuted">Card subtitle</h6>
+    <p class="card-text" id="newIdea">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
     <a href="#" class="card-link">Card link</a>
     <a href="#" class="card-link">Another link</a>
   </div>
@@ -46,6 +53,31 @@
     <div class="col-sm-3"></div>
 
 </div>
+<script>
+function copyIdeaFunc() {
+
+  var userInput= document.getElementById("comment").value;
+  console.log(userInput);
+  document.getElementById("newIdea").innerHTML=userInput;
+  document.getElementById("comment").value="";
+  fireBaseFunc();
+
+}
+</script>
+<script>
+
+    var url = 'https://idea-4531c.firebaseio.com/';
+    var firebase = new Firebase(url);
+
+   function fireBaseFunc(event)
+   {
+       var text = document.getElementById('newIdea').innerHTML;
+
+       var date = Date();
+       firebase. child(newIdea).set({Idea: text, Date: date});
+       event.preventDefault();
+   }
+   </script>
 
 <!--/.Card Light-->
 </body>
